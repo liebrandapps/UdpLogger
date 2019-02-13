@@ -1,3 +1,4 @@
+import argparse
 import io
 import errno
 import os
@@ -6,6 +7,7 @@ import signal
 import sys
 import time
 import socket
+import psutil
 
 
 from myio.liebrand.udplogger.Context import Context
@@ -199,7 +201,13 @@ class LogServer:
         self.log.info("Stopping UdpLogger")
 
 if __name__ == '__main__':
-    logFile = "./udpLogger.log"
+    parser = argparse.ArgumentParser(description='UdpLogger - Simple Remote Log Target')
+    parser.add_argument('action', help='start / stop / restart / status / nodaemon')
+    parser.add_argument('-l', '--log', default='./udpLogger.log')
+    parser.add_argument('-c', '--cfg', default='./udpLogger.ini')
+    args = parser.parse_args()
+    logFile = args.log
+    iniFile = args.cfg
     cfgDict = {
         'general': {
             'enableLogging': ['Boolean', "yes"],
@@ -218,14 +226,13 @@ if __name__ == '__main__':
             'AESKey': ['String', 'LOLLIPOPLOLLIPOP' ]
         }
     }
-    if len(sys.argv) > 1:
-        todo = sys.argv[1]
-        if todo in [ 'start', 'stop', 'restart', 'status' ]:
-            pidFile = "/tmp/udpLogger.pid"
-            logFile = logFile
-            d = Daemon(pidFile)
-            d.startstop(todo, stdout=logFile, stderr=logFile)
-    ctx = Context('./udpLogger.ini', cfgDict, 'UDPLogger')
+
+    if args.action in [ 'start', 'stop', 'restart', 'status' ]:
+        pidFile = "/tmp/udpLogger.pid"
+        logFile = logFile
+        d = Daemon(pidFile)
+        d.startstop(args.action, stdout=logFile, stderr=logFile)
+    ctx = Context(iniFile, cfgDict, 'UDPLogger')
     status = ctx.getStatus()
     if not(status[0] and status[1]):
         sys.exit(-1)

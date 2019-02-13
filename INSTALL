@@ -1,0 +1,33 @@
+
+Standalone Notes:
+
++ python3 is required
++ pip3 install psutil
++ modify app<TEMPLATE>.sh by updating the path and rename it to app.sh (& chmod +x ./app.sh)
++ start foreground: app.sh nodaemon
++ start daemon: app.sh start
++ stop daemon: app.sh stop
++ status daemon: app.sh status
+
+
+Docker Notes:
+
++ need to install and setup docker on your RPI (not part of this readme)
++ docker_udp_logger_rpi3 is your docker config file
++ the container directory needs to have appropriate permissions (chmod 777 ./container)
++ to build: docker build -t udp_logger_docker -f ./docker_udp_logger_rpi3 .
++ to run: docker run -v $PWD/container:/root/container udp_logger_docker
+
+-> check for log file in container directory
+
+Android Notes:
+
++ add the file 'UdpLogger.java' from the Android directory to your mobile app project
++ if needed adjust the package in this file
++ your app needs internet permission
++ from your app: call init() (e.g. in onCreate() of the MainActivity) This generates an unique ID and a AESKey.
+  Init returns the AES Key (String) and writes it to the log (see logcat)
++ You only need to call init once, config is made persistent in the shared prefs of the app. So you can remove init()
+  after initial use. To obtain the AES Key later again - just call init again
++ Also on app start (onCreate) call configure('YOUR_APP_NAME', 'ENCRYPT:TRUE/FALSE', 'REMOTE LOG HOST', 'REMOTE LOG PORT')
++ call log('SEVERITY OF YOUR CHOICE', 'MESSAGE')

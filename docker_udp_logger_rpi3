@@ -1,0 +1,14 @@
+FROM balenalib/raspberrypi3-python:latest
+ENTRYPOINT []
+
+RUN apt-get update && \
+    apt-get -qy install curl ca-certificates
+RUN apt-get install python3
+
+#CMD ["curl", "https://docker.com", "-o /root/container/x.txt"]
+CMD ["touch", "/root/container/y2"]
+CMD ["ls", "-al", "/root/container"]
+CMD ["python3", "-V"]
+CMD ["mkdir", "/root/app"]
+CMD ["git", "clone", "https://github.com/liebrandapps/UdpLogger.git", "/root/app"]
+CMD ["python3", "nodaemon", "--log=../container/udplogger.log", "--cfg=../container/udplogger.ini"
