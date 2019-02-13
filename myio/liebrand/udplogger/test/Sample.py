@@ -60,6 +60,7 @@ if __name__ == '__main__':
         dta = ctlBuffer.getvalue()
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(dta, (ip, port))
+        print ("Message send to %s:%d" % (ip, int(port)))
+        sock.sendto(dta, (ip, int(port)))
         sock.close()
         time.sleep(0.05)

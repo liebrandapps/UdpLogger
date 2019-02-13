@@ -12,13 +12,23 @@ Standalone Notes:
 
 Docker Notes:
 
-+ need to install and setup docker on your RPI (not part of this readme)
++ need to install and setup docker on your RPI / machine:
+    curl -sSL https://get.docker.com | sh
+    sudo systemctl enable docker
+    (if running as user pi) sudo usermod -aG docker pi
 + docker_udp_logger_rpi3 is your docker config file
 + the container directory needs to have appropriate permissions (chmod 777 ./container)
 + to build: docker build -t udp_logger_docker -f ./docker_udp_logger_rpi3 .
-+ to run: docker run -v $PWD/container:/root/container udp_logger_docker
++ to run: docker run -v $PWD/container:/root/container -p 8765:8765/udp udp_logger_docker
 
 -> check for log file in container directory
+
+Test your installation:
+
++ run Sample.py from udplogger/test
++ specify remote udp logger ip & port as command line parameters
++ in case you updated the encryption key, make sure sample.py has the right one...
+
 
 Android Notes:
 
