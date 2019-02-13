@@ -12,7 +12,7 @@ import psutil
 
 from myio.liebrand.udplogger.Context import Context
 from myio.liebrand.udplogger.LogWriter import LogWriter
-from myio.liebrand.udplogger.Utility import SockRead, ReadDictionary
+from myio.liebrand.udplogger.Utility import SockRead, ReadDictionary, SockIOException
 
 
 class Daemon:
@@ -187,6 +187,8 @@ class LogServer:
                             pass
 
                 sock.close()
+            except SockIOException as e:
+                sock.close()
             except socket.error as e:
                 if e.errno == errno.EINTR:
                     pass
@@ -203,8 +205,8 @@ class LogServer:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='UdpLogger - Simple Remote Log Target')
     parser.add_argument('action', help='start / stop / restart / status / nodaemon')
-    parser.add_argument('-l', '--log', default='./udpLogger.log')
-    parser.add_argument('-c', '--cfg', default='./udpLogger.ini')
+    parser.add_argument('-l', '--log', default='./udplogger.log')
+    parser.add_argument('-c', '--cfg', default='./udplogger.ini')
     args = parser.parse_args()
     logFile = args.log
     iniFile = args.cfg

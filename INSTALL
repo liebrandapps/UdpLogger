@@ -20,6 +20,8 @@ Docker Notes:
 + the container directory needs to have appropriate permissions (chmod 777 ./container)
 + to build: docker build -t udp_logger_docker -f ./docker_udp_logger_rpi3 .
 + to run: docker run -v $PWD/container:/root/container -p 8765:8765/udp udp_logger_docker
++ add '-d' to run in background (docker run -d -v ....)
++ to stop when in background: docker ps / (copy container id) /  docker stop <container id>
 
 -> check for log file in container directory
 

@@ -31,7 +31,11 @@ if __name__ == '__main__':
 
     ip = sys.argv[1]
     port = sys.argv[2]
-    key = 'LOLLIPOPLOLLIPOP'
+    if len(sys.argv)>3:
+        key = 'dAFGQfI8X1yvzLtTwo2A9axmJSpW17ul'
+    else:
+        key = 'LOLLIPOPLOLLIPOP'
+    print(key)
     cipher = AES.new(key, AES.MODE_ECB)
 
     dct = {
